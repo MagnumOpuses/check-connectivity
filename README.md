@@ -30,7 +30,7 @@ This is a small node module that helps you monitor the health of your web servic
 
 ## Versions
 
-1.0.1-beta
+1.1.0-beta
 
 ### Interface diagram
 
@@ -49,14 +49,15 @@ npm install git+https://git@github.com/MagnumOpuses/check-connectivity
 ### Step 2: Configure and start embedded server
 
 ```js
-// Start up the health server
-const healthServer = new require("check-connectivity")({
+// Start up the server
+const CC = require("check-connectivity");
+const cc = await new CC("check-connectivity")({
   port: 9801, // Optional configuration property, default 9800.
   compatibleWith: {
     "other-service": "^1.0.0", // <service name>: "<service version>"
     "another-service": "^2.0.0" // <service name>: "<service version>"
   }
-}).listen();
+}).startup();
 ```
 
 :warning: A general recommendation is to not publically expose the operational port of the health server (default port: 9800).
@@ -73,14 +74,14 @@ const app = require("express")(); // A sample Express app.
 
 // Install middleware into your main express app.
 // This enables the route "/checkCompatability"
-app.use(health.middleware());
+app.use(cc.middleware());
 ```
 
 ### Step 4: Graceful shutdown of embedded server
 
 ```js
 // Graceful shutdown of embedded server
-healthServer.shutdown();
+cc.shutdown();
 ```
 
 ---

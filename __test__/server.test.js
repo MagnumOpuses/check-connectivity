@@ -1,32 +1,32 @@
 const fetch = require("node-fetch");
 
-test("server listen", done => {
+test("server listen", async done => {
   const Health = require("../index");
-  const health = new Health({
+  const health = await new Health({
     host: "localhost",
     port: 9800,
     compatibleWith: {
       foo: "^1.0.0",
       bar: "^2.0.0"
     }
-  }).listen();
+  }).startup();
 
   fetch("http://localhost:9800/health")
-    .then(result => {
+    .then(async result => {
       expect(result.status).toBe(200);
-      health.shutdown();
+      await health.shutdown();
       done();
     })
-    .catch(err => {
-      health.shutdown();
+    .catch(async err => {
+      await health.shutdown();
       done.fail("Failed to query health app server! Error: " + err);
     });
 });
 
-test("check compatability with other health server", done => {
+test("check compatability with other health server", async done => {
   const Health = require("../index");
 
-  const healthA = new Health({
+  const healthA = await new Health({
     host: "localhost",
     port: 9800,
     compatibleWith: {
@@ -34,28 +34,28 @@ test("check compatability with other health server", done => {
       bar: "^2.0.0",
       "check-connectivity": "^1.0.0"
     }
-  }).listen();
+  }).startup();
 
-  const healthB = new Health({
+  const healthB = await new Health({
     host: "localhost",
     port: 9900,
     compatibleWith: {
       foo: "^1.0.0",
       bar: "^2.0.0"
     }
-  }).listen();
+  }).startup();
 
   healthA
     .checkCompatabilityWith("http://localhost:9900/health")
-    .then(result => {
+    .then(async result => {
       expect(result).toBeTruthy();
-      healthA.shutdown();
-      healthB.shutdown();
+      await healthA.shutdown();
+      await healthB.shutdown();
       done();
     })
-    .catch(err => {
-      healthA.shutdown();
-      healthB.shutdown();
+    .catch(async err => {
+      await healthA.shutdown();
+      await healthB.shutdown();
       done.fail("Failed to query other health app server! Error: " + err);
     });
 });

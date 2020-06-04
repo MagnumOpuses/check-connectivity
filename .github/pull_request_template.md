@@ -1,5 +1,5 @@
 ---
-assignees: "MagnumOpuses/gravity"
+reviewers: "MagnumOpuses/gravity"
 ---
 
 **Implements/Fixes**

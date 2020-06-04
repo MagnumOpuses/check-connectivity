@@ -1,7 +1,3 @@
----
-reviewers: "MagnumOpuses/gravity"
----
-
 **Implements/Fixes**
 
 ...

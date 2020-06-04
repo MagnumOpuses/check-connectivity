@@ -4,7 +4,7 @@
 
 [A JobTech Project](https://www.jobtechdev.se)
 
-# Check Connectivity
+# Check Connectivity 
 
 This is a small node module that helps you monitor the health of your web service.
 
